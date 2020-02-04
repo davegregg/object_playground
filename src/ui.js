@@ -95,11 +95,18 @@ window.cm = window.cm || {};
   
   function getUserCode() {
 		return cm.getValue();
-	}
+  }
+  
+  function isPrimitive(value) {
+    return (value !== Object(value));
+  }
 
 	function renderUserCode() {
 		try {
-      const output = jdls.usercode.evaluate(getUserCode());
+      let output = jdls.usercode.evaluate(getUserCode());
+      console.log(output)
+      if (isPrimitive(output)) output = Object(output);
+
       const [[ name, object ]] = Object.entries(output);
       
 			const options = {
@@ -107,7 +114,8 @@ window.cm = window.cm || {};
 				allFunctions: functions.checked
 			};
 
-			graph.innerHTML = jdls.viz.render(name, object, options);
+      const initialObjectDescription = `${name} (instance of ${object.constructor.name})`
+			graph.innerHTML = jdls.viz.render(initialObjectDescription, object, options);
 		}
 		catch(err) {
 			graph.innerHTML = inspect(err.toString());
