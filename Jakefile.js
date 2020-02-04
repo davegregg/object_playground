@@ -109,6 +109,8 @@
 	function browserLintGlobals() {
 		return {
 			jdls: true,
+			CodeMirror: true,
+      cm: true,
 
 			console: false,
 			mocha: false,

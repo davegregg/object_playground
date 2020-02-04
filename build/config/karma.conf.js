@@ -22,7 +22,8 @@
 
 	    // list of files / patterns to load in the browser
 	    files: [
-		    'src/viz/viz.js',
+        'src/viz/viz.js',
+        'src/CodeMirror/codemirror.js',
 		    'src/*.js'
 	    ],
 
