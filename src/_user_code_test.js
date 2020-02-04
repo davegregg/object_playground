@@ -13,10 +13,10 @@
 
 		it("evaluates to an object", function() {
 			var code = "" +
-				"this.foo = {" +
+				"let foo = {" +
 				"  a: 1," +
 				"  b: 2" +
-				"}";
+				"}; output({ foo });";
 
 			expect(evaluate(code)).to.eql({
 				foo: {
