@@ -11,16 +11,18 @@ window.jdls = window.jdls || {};
 
 	exports.evaluate = function evaluate(code) {
 		/*jshint evil:true, newcap: false */
-    var context = {};
-    const output = objectToInspect => context = objectToInspect
+    const context = {};
+    const output = valueToInspect => Object.assign(context, {
+      [typeof valueToInspect]: Object(valueToInspect)
+    });
 
-		eval(code); // Function(code).call(context);
+		eval(code);
 		return context;
 	};
 
 	samples.instructions = { name: "Instructions", code: '// Enter JavaScript code in this box and then click the "Evaluate" button.\n' +
-		'// In order to see the output correctly, you must pass your object to the `output()` function exactly like so:.\n' +
-		'// `output({ nameOfObject })` – notice the { and }.\n' +
+		'// In order to see the output, you must pass your object to the `output()` function exactly like so:.\n' +
+		'// `output(myObject)`.\n' +
 		'\n' +
 		'// Example:\n' +
 `function Animal (name, size) {
@@ -46,7 +48,7 @@ Dog.prototype.bark = function bark () {}
 Dog.prototype.fetch = function fetch () {}
 
 const fido = new Dog('Fido', 'medium', 'labrador retriever')
-output({ fido })\n`
+output(fido)\n`
 	};
 
 	// samples.es5class = { name: "ES5 Class", code: '// Constructor\n' +
