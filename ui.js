@@ -103,19 +103,17 @@ window.cm = window.cm || {};
 
 	function renderUserCode() {
 		try {
-      let output = jdls.usercode.evaluate(getUserCode());
-      console.log(output)
-      if (isPrimitive(output)) output = Object(output);
+      const objectWrapper = jdls.usercode.evaluate(getUserCode());
+      const object = Object(objectWrapper.value)
+      const classConstructor = object.constructor.name
 
-      const [[ name, object ]] = Object.entries(output);
-      
 			const options = {
 				builtins: builtins.checked,
 				allFunctions: functions.checked
 			};
 
-      const initialObjectDescription = `${name} (instance of ${object.constructor.name})`
-			graph.innerHTML = jdls.viz.render(initialObjectDescription, object, options);
+      const description = `instance of ${classConstructor}`
+			graph.innerHTML = jdls.viz.render(description, object, options);
 		}
 		catch(err) {
 			graph.innerHTML = inspect(err.toString());
