@@ -11,148 +11,120 @@ window.jdls = window.jdls || {};
 
 	exports.evaluate = function evaluate(code) {
 		/*jshint evil:true, newcap: false */
-    const context = {};
-    const output = valueToInspect => Object.assign(context, {
-      [typeof valueToInspect]: Object(valueToInspect)
-    });
+    const objectWrapper = {};
+    const VISUALIZE = valueToInspect => Object.assign(objectWrapper, {
+      value: valueToInspect
+    })
 
 		eval(code);
-		return context;
+		return objectWrapper;
 	};
 
-	samples.instructions = { name: "Instructions", code: '// Enter JavaScript code in this box and then click the "Evaluate" button.\n' +
-		'// In order to see the output, you must pass your object to the `output()` function exactly like so:.\n' +
-		'// `output(myObject)`.\n' +
-		'\n' +
-		'// Example:\n' +
-`function Animal (name, size) {
+	samples.prototypeSyntax = { name: "Prototype Syntax", code: '// Enter some JavaScript and then click the "Evaluate" button.\n' +
+		'// In order to see a visual representation of an object, you must pass your object to the `VISUALIZE()` function like so: `VISUALIZE(myObject)`\n\n' +
+`// EXAMPLE of Prototype Syntax:
+function User (name, age, email) {
   this.name = name
-  this.size = size
+  this.age = age
+  this.email = email
 }
 
-Animal.prototype = {
-  constructor: Animal,
-  eat() {},
-  sleep() {},
-  defecate() {},
+User.prototype = {
+  constructor: User,
+
+  login() {},
+  logout() {},
+  changeEmail() {},
+  changePassword() {},
 }
 
-function Dog (name, size, breed) {
-  Animal.call(this, name, size)
-  this.breed = breed
-}
-
-Object.setPrototypeOf(Dog.prototype, Animal.prototype)
-
-Dog.prototype.bark = function bark () {}
-Dog.prototype.fetch = function fetch () {}
-
-const fido = new Dog('Fido', 'medium', 'labrador retriever')
-output(fido)\n`
+const sherbert = new User('Sherbert Aurelius Bagphone', '36', 'user@example.com')
+VISUALIZE(sherbert)\n`
 	};
 
-	// samples.es5class = { name: "ES5 Class", code: '// Constructor\n' +
-	// 	'function MyClass() {\n' +
-	// 	'  this.a = 42;\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Method\n' +
-	// 	'MyClass.prototype.method = function method() {};\n' +
-	// 	'\n' +
-	// 	'// Instantiate\n' +
-	// 	'this.instance = new MyClass();\n'
-	// };
+	samples.prototypeSyntaxWithInheritance = { name: "Prototype Syntax w/ Inheritance", code: '// Enter some JavaScript and then click the "Evaluate" button.\n' +
+  '// In order to see a visual representation of an object, you must pass your object to the `VISUALIZE()` function like so: `VISUALIZE(myObject)`\n\n' +
+`// EXAMPLE of Prototype Syntax w/ Inheritance:
+function User (name, age, email) {
+  this.name = name
+  this.age = age
+  this.email = email
+}
 
-	// samples.es6class = { name: "ES6 Class", code: '// This example only works on browsers that support ES6 classes\n' +
-	// 	'\n' +
-	// 	'// Class\n' +
-	// 	'class MyClass {\n' +
-	// 	'\n' +
-	// 	'  // Constructor\n' +
-	// 	'  constructor() {\n' +
-	// 	'    this.a = 42;\n' +
-	// 	'  }\n' +
-	// 	'\n' +
-	// 	'  // Method\n' +
-	// 	'  method() {}\n' +
-	// 	'\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Instantiate\n' +
-	// 	'this.instance = new MyClass();\n'
-	// };
+User.prototype = {
+  constructor: User,
 
-	// samples.es5inheritance = { name: "ES5 Inheritance", code: '// Parent class constructor\n' +
-	// 	'function Parent() {\n' +
-	// 	'  this.a = 42;\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Parent class method\n' +
-	// 	'Parent.prototype.method = function method() {};\n' +
-	// 	'\n' +
-	// 	'// Child class constructor\n' +
-	// 	'function Child() {\n' +
-	// 	'  Parent.call(this);\n' +
-	// 	'  this.b = 3.14159\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Inherit from the parent class\n' +
-	// 	'Child.prototype = Object.create(Parent.prototype);\n' +
-	// 	'Child.prototype.constructor = Child;\n' +
-	// 	'\n' +
-	// 	'// Child class method\n' +
-	// 	'Child.prototype.method = function method() {\n' +
-	// 	'  Parent.prototype.method.call(this);\n' +
-	// 	'};\n' +
-	// 	'\n' +
-	// 	'// Instantiate\n' +
-	// 	'this.instance = new Child();\n'
-	// };
+  login() {},
+  logout() {},
+  changeEmail() {},
+  changePassword() {},
+}
 
-	// samples.es6inheritance = { name: "ES6 Inheritance", code: '// This example only works on browsers that support ES6 classes\n' +
-	// 	'\n' +
-	// 	'// Parent class\n' +
-	// 	'class Parent {\n' +
-	// 	'\n' +
-	// 	'  // Parent class constructor\n' +
-	// 	'  constructor() {\n' +
-	// 	'    this.a = 42;\n' +
-	// 	'  }\n' +
-	// 	'\n' +
-	// 	'  // Parent class method\n' +
-	// 	'  method() {}\n' +
-	// 	'\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Child class inherits from Parent\n' +
-	// 	'class Child extends Parent {\n' +
-	// 	'\n' +
-	// 	'  // Child class constructor\n' +
-	// 	'  constructor() {\n' +
-	// 	'    super();\n' +
-	// 	'    this.b = 3.14159;\n' +
-	// 	'  }\n' +
-	// 	'\n' +
-	// 	'  // Child class method\n' +
-	// 	'  method() {\n' +
-	// 	'    super.method();\n' +
-	// 	'  }\n' +
-	// 	'\n' +
-	// 	'}\n' +
-	// 	'\n' +
-	// 	'// Instantiate\n' +
-	// 	'this.instance = new Child();\n'
-	// };
+function AdminUser (name, age, email, permissionLevel = 1) {
+  User.call(this, name, age, email)
+  this.permissionLevel = permissionLevel
+}
 
-	// samples.inception = { name: "Inception!", code: 'this.jdls = jdls;\n' +
-	// 	'\n' +
-	// 	'// Can you figure out what the following line does?\n' +
-	// 	'// Caution: It\'s commented out because some people have\n' +
-	// 	'// reported their browser crashes when this line runs. D\'oh!\n' +
-	// 	'\n' +
-	// 	'// this.inception = new jdls.ObjectGraph("root", jdls);\n'
-	// };
+AdminUser.prototype = Object.create(User.prototype)
+AdminUser.prototype.constructor = AdminUser
 
-	exports.DEFAULT_SAMPLE = samples.instructions;
+AdminUser.prototype.banUser = function banUser (user) {}
+
+const gooseberry = new AdminUser('Gooseberry J. Rotaryphone', '32', 'user@example.com', 3)
+VISUALIZE(gooseberry)\n`
+  };
+
+	samples.classSyntax = { name: "Class Syntax", code: '// Enter some JavaScript and then click the "Evaluate" button.\n' +
+  '// In order to see a visual representation of an object, you must pass your object to the `VISUALIZE()` function like so: `VISUALIZE(myObject)`\n\n' +
+`// EXAMPLE of Class Syntax:
+class User {
+  constructor (name, age, email) {
+    this.name = name
+    this.age = age
+    this.email = email
+  }
+
+  login() {}
+  logout() {}
+  changeEmail() {}
+  changePassword() {}
+}
+
+const sherbert = new User('Sherbert Aurelius Bagphone', '36', 'user@example.com')
+VISUALIZE(sherbert)\n`
+	};
+
+
+
+	samples.classSyntaxWithInheritance = { name: "Class Syntax w/ Inheritance", code: '// Enter some JavaScript and then click the "Evaluate" button.\n' +
+  '// In order to see a visual representation of an object, you must pass your object to the `VISUALIZE()` function like so: `VISUALIZE(myObject)`\n\n' +
+`// EXAMPLE of Class Syntax w/ Inheritance:
+class User {
+  constructor (name, age, email) {
+    this.name = name
+    this.age = age
+    this.email = email
+  }
+
+  login() {}
+  logout() {}
+  changeEmail() {}
+  changePassword() {}
+}
+
+class AdminUser extends User {
+  constructor (name, age, email, permissionLevel = 1) {
+    super(name, age, email)
+    this.permissionLevel = permissionLevel
+  }
+  
+  banUser (user) {}
+}
+
+const gooseberry = new AdminUser('Gooseberry J. Rotaryphone', '32', 'user@example.com', 3)
+VISUALIZE(gooseberry)\n`
+	};
+
+	exports.DEFAULT_SAMPLE = samples.prototypeSyntax;
 
 }());
