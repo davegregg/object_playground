@@ -11,14 +11,16 @@ window.jdls = window.jdls || {};
 
 	exports.evaluate = function evaluate(code) {
 		/*jshint evil:true, newcap: false */
-		var context = {};
-		Function(code).call(context);
+    var context = {};
+    const output = objectToInspect => context = objectToInspect
+
+		eval(code); // Function(code).call(context);
 		return context;
 	};
 
 	samples.instructions = { name: "Instructions", code: '// Enter JavaScript code in this box and then click the "Evaluate" button.\n' +
-		'// Any variable you assign to "this" will be graphed below.\n' +
-		'// Try the presets above for more examples!\n' +
+		'// In order to see the output correctly, you must pass your object to the `output()` function exactly like so:.\n' +
+		'// `output({ nameOfObject })` – notice the { and }.\n' +
 		'\n' +
 		'// Example:\n' +
 `function Animal (name, size) {
@@ -40,7 +42,11 @@ function Dog (name, size, breed) {
 
 Object.setPrototypeOf(Dog.prototype, Animal.prototype)
 
-const sadie = new Dog('Sadie', 'medium', 'labrador retriever')\n`
+Dog.prototype.bark = function bark () {}
+Dog.prototype.fetch = function fetch () {}
+
+const fido = new Dog('Fido', 'medium', 'labrador retriever')
+output({ fido })\n`
 	};
 
 	// samples.es5class = { name: "ES5 Class", code: '// Constructor\n' +
